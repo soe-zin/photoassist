@@ -1,0 +1,1 @@
+H:\vscode_workspace\photoassist\app\src\main\AndroidManifest.xml
