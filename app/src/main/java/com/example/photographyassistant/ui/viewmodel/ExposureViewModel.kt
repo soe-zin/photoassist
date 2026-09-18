@@ -53,7 +53,9 @@ class ExposureViewModel : ViewModel() {
     fun getExposureRecommendation(
         currentEv: Double,
         meteringMode: String,
-        sceneBrightness: String
+        sceneBrightness: String,
+        aperture: Double,
+        shutterSpeed: Double
     ) {
         viewModelScope.launch {
             try {
@@ -82,7 +84,7 @@ class ExposureViewModel : ViewModel() {
                 )
                 
                 val exposureValue = exposureCalculator.calculateExposureRecommendation(
-                    currentEv, 2.8, 0.5
+                    currentEv, aperture, shutterSpeed
                 )
                 
                 _exposureValue.value = exposureValue

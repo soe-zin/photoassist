@@ -38,7 +38,7 @@ class CalculatorViewModel : ViewModel() {
                 _errorMessage.value = null
                 
                 val result = exposureCalculator.calculateExposure(iso, aperture, shutterSpeed)
-                _calculationResult.value = formatExposureResult(result)
+                _calculationResult.value = result.toString()
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "Error calculating exposure"
                 _calculationResult.value = null
