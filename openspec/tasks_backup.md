@@ -8,7 +8,7 @@
 ## Phase 1: Foundation (Tasks 1-5)
 
 - [x] **Task 1: Create Android project with no-Internet enforcement**
-  - **Description**: Initialize Android project (minSdk 26, targetSdk 34), configure build.gradle, explicitly omit android.permission.INTERNET from manifest
+  - **Description**: Initialize Android project (minSdk 26, targetSdk 34), configure build.gradle, explicitly omit ndroid.permission.INTERNET from manifest
   - **Acceptance**: Manifest validates no INTERNET permission; builds successfully
   - **Dependencies**: None
   - **Module Reference**: design.md §2.1, §5.1, §5.5
@@ -26,12 +26,24 @@
    - **Module Reference**: design.md §3.1.1, §8.1
 
 - [x] **Task 4: Implement exposure recommendation engine**
+   - **Description**: Create algorithm to generate exposure recommendations based on light meter readings
+   - **Acceptance**: Exposure recommendation engine produces deterministic results
+   - **Dependencies**: Task 3
+   - **Module Reference**: design.md §3.1.1
+
+- [ ] **Task 5: Implement basic navigation and UI shell**
+  - **Description**: Implement exposure value calculations including EV, ISO, aperture, shutter speed
+  - **Acceptance**: Unit tests pass for normal values, boundary values, invalid inputs
+  - **Dependencies**: Task 2
+  - **Module Reference**: design.md §3.1.1, §8.1
+
+- [ ] **Task 4: Implement exposure recommendation engine**
   - **Description**: Create algorithm to generate exposure recommendations based on light meter readings
   - **Acceptance**: Exposure recommendation engine produces deterministic results
   - **Dependencies**: Task 3
   - **Module Reference**: design.md §3.1.1
 
-- [x] **Task 5: Implement basic navigation and UI shell**
+- [ ] **Task 5: Implement basic navigation and UI shell**
   - **Description**: Set up navigation structure and basic screen layouts
   - **Acceptance**: App launches with navigation structure; screens render correctly
   - **Dependencies**: Task 1
@@ -39,49 +51,49 @@
 
 ## Phase 2: Camera Integration (Tasks 6-10)
 
-- [x] **Task 6: Implement camera capability discovery**
+- [ ] **Task 6: Implement camera capability discovery**
   - **Description**: Use Camera2 API to discover available camera features and capabilities
   - **Acceptance**: App can detect cameras with/without RAW support, different resolutions
   - **Dependencies**: Task 5
   - **Module Reference**: design.md §3.2.1, §25.2
 
-- [x] **Task 7: Implement camera preview and lifecycle handling**
+- [ ] **Task 7: Implement camera preview and lifecycle handling**
   - **Description**: Set up CameraX or Camera2 preview with proper lifecycle management
   - **Acceptance**: Camera preview displays correctly; resources released on app pause
   - **Dependencies**: Task 6
   - **Module Reference**: design.md §3.2.1, §23
 
-- [x] **Task 8: Implement frame-processing abstraction**
+- [ ] **Task 8: Implement frame-processing abstraction**
   - **Description**: Create abstraction layer for processing camera frames
   - **Acceptance**: Frame processor interfaces established; processing pipeline functional
   - **Dependencies**: Task 7
   - **Module Reference**: design.md §3.2.1
 
-- [~] **Task 9: Implement RAW capability detection and fallback**
-  - **Description**: Detect RAW sensor support; implement JPEG fallback when RAW unavailable
-  - **Acceptance**: RAW capture works on supported devices; graceful fallback on unsupported
-  - **Dependencies**: Task 6
+- [ ] **Task 9: Implement RAW capability detection and fallback**
+  - **Description**: Detect RAW sensor support; implement fallback path for non-RAW cameras
+  - **Acceptance**: App works with both RAW and non-RAW cameras; fallback path validated
+  - **Dependencies**: Task 6, Task 8
   - **Module Reference**: design.md §3.2.1, §25.2
 
-- [ ] **Task 10: Implement region sampling and quality reporting**
-  - **Description**: Implement spot/center-weighted/average metering regions; exposure quality metrics
-  - **Acceptance**: Multiple metering modes functional; quality scores reported
-  - **Dependencies**: Task 8
-  - **Module Reference**: design.md §3.2.1
+- [ ] **Task 10: Implement region sampling and measurement-quality reporting**
+  - **Description**: Implement sampling algorithms for accurate measurements; quality metrics
+  - **Acceptance**: Measurement quality reporting works; region sampling functional
+  - **Dependencies**: Task 8, Task 9
+  - **Module Reference**: design.md §3.2.2
 
-## Phase 3: Light & Solar Calculations (Tasks 11-14)
+## Phase 3: Features Implementation (Tasks 11-14)
 
-- [ ] **Task 11: Implement lux estimation and calibration**
-  - **Description**: Convert camera sensor data to lux estimates; apply calibration profiles
-  - **Acceptance**: Lux estimation functional; calibration profiles can be applied
-  - **Dependencies**: Task 8
-  - **Module Reference**: design.md §3.1.2, §25
+- [ ] **Task 11: Implement estimated brightness and lux processing**
+  - **Description**: Convert camera data to lux measurements with calibration status
+  - **Acceptance**: Lux measurements calculated; calibration status clearly displayed
+  - **Dependencies**: Task 10
+  - **Module Reference**: design.md §3.1.2, §3.2.2
 
-- [ ] **Task 12: Implement exposure metering with live preview**
-  - **Description**: Real-time exposure analysis from camera frames; live preview integration
-  - **Acceptance**: Live exposure meter updates; preview shows metering regions
-  - **Dependencies**: Task 8, Task 11
-  - **Module Reference**: design.md §3.2.1, §25
+- [ ] **Task 12: Implement calibration profile storage**
+  - **Description**: Create calibration profile system for camera-specific calibration data
+  - **Acceptance**: Calibration profiles can be created, stored, and retrieved
+  - **Dependencies**: Task 2, Task 11
+  - **Module Reference**: design.md §3.1.2, §4.1.4
 
 - [ ] **Task 13: Implement the Sun calculation engine and tests**
   - **Description**: Implement astronomical calculations for sunrise/sunset/golden hour
@@ -151,4 +163,3 @@
 3. **Resource Management**: Camera resources released when screen closed/backgrounded (requirements §23)
 4. **API 26 Minimum**: Camera capabilities are device-specific; handle limitations (requirements §25)
 5. **Calibrated vs Estimated**: Lux measurements must distinguish between calibrated and estimated (requirements §25)
-

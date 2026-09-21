@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.localViewModel
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
 import com.example.photographyassistant.ui.viewmodel.LuxMeterViewModel
 
 @Composable
@@ -53,6 +55,11 @@ fun LuxMeterScreen(modifier: Modifier = Modifier) {
         var apertureInput by remember { mutableStateOf("2.8") }
         var shutterSpeedInput by remember { mutableStateOf("0.5") }
         
+        // Initialize RAW capability detection when screen is displayed
+        LaunchedEffect(Unit) {
+            viewModel.initializeRawCapabilityDetection()
+        }
+        
         TextField(
             value = isoInput,
             onValueChange = { isoInput = it },
@@ -73,6 +80,44 @@ fun LuxMeterScreen(modifier: Modifier = Modifier) {
             label = { Text("Shutter Speed (s)") },
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
+        
+        // Show RAW capability status
+        val rawStrategy = viewModel.getRawCaptureStrategy()
+        val isRawAvailable = viewModel.isRawCaptureAvailable()
+        
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = if (isRawAvailable)
+                    MaterialTheme.colorScheme.secondaryContainer
+                else
+                    MaterialTheme.colorScheme.surfaceVariant
+            )
+        ) {
+            Row(modifier = Modifier.padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "RAW Status: ${if (isRawAvailable) "SUPPORTED" else "FALLBACK"}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isRawAvailable)
+                        MaterialTheme.colorScheme.secondary
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "Strategy: ${rawStrategy.first}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            rawStrategy.second?.let { fallbackReason ->
+                Text(
+                    text = fallbackReason,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+        }
         
         Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Button(

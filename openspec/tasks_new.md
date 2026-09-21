@@ -151,4 +151,3 @@
 3. **Resource Management**: Camera resources released when screen closed/backgrounded (requirements §23)
 4. **API 26 Minimum**: Camera capabilities are device-specific; handle limitations (requirements §25)
 5. **Calibrated vs Estimated**: Lux measurements must distinguish between calibrated and estimated (requirements §25)
-
